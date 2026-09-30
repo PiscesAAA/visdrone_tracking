@@ -2,8 +2,10 @@ import os
 from pathlib import Path
 import cv2
 
-# 数据集根目录，根据自己的路径调整
-ROOT_DIR = Path("datasets/VisDrone")
+# 获取当前脚本所在目录的上一级目录（即项目根目录）
+BASE_DIR = Path(__file__).resolve().parent.parent
+# 基于根目录拼接数据集路径
+ROOT_DIR = BASE_DIR / "datasets" / "VisDrone"
 
 
 def convert_visdrone_to_yolo(split):
