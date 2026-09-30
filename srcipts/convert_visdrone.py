@@ -35,19 +35,20 @@ def convert_visdrone_to_yolo(split):
 
                 x, y, bw, bh, score, category = map(int, parts[:6])
 
-                # VisDrone中 category 为 0 是忽略区域，score 为 0 表示无效
+                # VisDrone中 category 为 0 是忽略区域，score 为 0 表示无效(这种区域不要)
                 if category == 0 or score == 0: continue
 
                 # VisDrone类别 1~10 对应 YOLO 类别 0~9
                 cls_id = category - 1
 
-                # 计算归一化中心点和宽高
+                # 计算归一化中心点和宽高（除以w或者h是为了计算归一化）
                 x_c = (x + bw / 2) / w
                 y_c = (y + bh / 2) / h
                 norm_w = bw / w
                 norm_h = bh / h
 
                 # 限制在 0-1 之间，防止浮点误差越界
+                #产生越界的原因有：①浮点除法可能产生极小的误差②VisDrone 标注中，有些标注框可能部分超出图像边界
                 x_c, y_c = max(0, min(1, x_c)), max(0, min(1, y_c))
                 norm_w, norm_h = max(0, min(1, norm_w)), max(0, min(1, norm_h))
 
@@ -56,6 +57,7 @@ def convert_visdrone_to_yolo(split):
     print(f"✅ {split} 转换完成！保存至 {out_dir}")
 
 
+#直接运行能转换，作模块被导入时只能调用函数（convert_visdrone_to_yolo()）来转换
 if __name__ == "__main__":
     for split in ["train", "val", "test-dev"]:
         convert_visdrone_to_yolo(split)
