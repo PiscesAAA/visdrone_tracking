@@ -56,7 +56,7 @@ def convert_visdrone_to_yolo(split):
 
                 out_f.write(f"{cls_id} {x_c:.6f} {y_c:.6f} {norm_w:.6f} {norm_h:.6f}\n")
 
-    print(f"✅ {split} 转换完成！保存至 {out_dir}")
+    print(f" {split} 转换完成！保存至 {out_dir}")
 
 
 #直接运行能转换，作模块被导入时只能调用函数（convert_visdrone_to_yolo()）来转换
